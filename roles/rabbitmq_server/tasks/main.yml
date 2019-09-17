@@ -1,4 +1,6 @@
 ---
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
 - include: rabbitmq_install.yml
 - include: rabbitmq_set_cookie.yml
   when: groups['rabbitmq']|length >= 3
