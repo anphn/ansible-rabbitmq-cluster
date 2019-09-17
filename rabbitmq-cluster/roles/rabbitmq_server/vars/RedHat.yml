@@ -1,0 +1,5 @@
+---
+# vars file for rabbitmq_server
+## install rabbitmq-redhat
+rabbitmq_distro_packages:
+  - rabbitmq-server

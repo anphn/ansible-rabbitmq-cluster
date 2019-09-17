@@ -1,0 +1,12 @@
+rabbitmq_distro_packages:
+  - rabbitmq-server
+#rabbitmq_master_node: "{{ hostvars[groups['rabbitmq'][0]]['inventory_hostname'] }}"
+rabbitmq_master_node: "{{ hostvars[groups['rabbitmq'][0]]['inventory_hostname'] }}"
+rabbitmq_cluster_name: mony_message_cluster
+rabbitmq_server_service: rabbitmq-server
+rabbitmq_auth_user: rabbit
+rabbitmq_auth_password: Jd0Hs5XHmFrJzPTW
+rabbitmq_cookie_token: Jd0Hs5XHmFrJzPTW
+rabbitmq_plugins:
+  - name: rabbitmq_management
+    state: enabled

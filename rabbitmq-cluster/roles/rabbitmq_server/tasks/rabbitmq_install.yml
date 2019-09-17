@@ -1,0 +1,31 @@
+---
+
+- name: Install RabbitMQ packages
+  apt:
+    name: "{{ rabbitmq_distro_packages }}"
+    state: "present"
+  register: install_packages
+  until: install_packages is success
+  retries: 5
+  delay: 2
+  when: ansible_distribution == "Ubuntu"
+  
+- name: Install RabbitMQ packages
+  apt:
+    name: "{{ rabbitmq_distro_packages }}"
+    state: "present"
+  register: install_packages
+  until: install_packages is success
+  retries: 5
+  delay: 2
+  when: ansible_distribution == "CentOS"
+
+- name: start service rabbitmq-
+  systemd:
+    name: "{{ rabbitmq_server_service }}"
+    state: started
+    enabled: True
+  register: service_restarted
+  until: service_restarted is success
+  retries: 5
+  delay: 1

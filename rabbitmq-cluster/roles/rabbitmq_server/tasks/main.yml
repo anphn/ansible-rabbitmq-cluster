@@ -1,0 +1,8 @@
+---
+- include: rabbitmq_install.yml
+- include: rabbitmq_set_cookie.yml
+  when: groups['rabbitmq']|length >= 3
+- include: rabbitmq_cluster.yml
+  when: groups['rabbitmq']|length >= 3
+- include: rabbitmq_create_user.yml
+  when: inventory_hostname == rabbitmq_master_node

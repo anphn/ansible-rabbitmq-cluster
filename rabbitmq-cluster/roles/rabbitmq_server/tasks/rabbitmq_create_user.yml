@@ -1,0 +1,15 @@
+---
+- name: Configure rabbitmq plugins
+  rabbitmq_plugin:
+    names: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ rabbitmq_plugins }}"
+  
+- name: create user for services
+  rabbitmq_user:
+    user: "{{ rabbitmq_auth_user }}"
+    password: "{{ rabbitmq_auth_password }}"
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
