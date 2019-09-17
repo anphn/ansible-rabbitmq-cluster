@@ -1,0 +1,48 @@
+---
+
+- name: Disable selinux temporary
+  command: setenforce 0
+  ignore_errors: True
+
+- name: Disable selinux after reboot
+  selinux:
+    state: disabled
+
+- name: Import signing key for RabbitMQ
+  rpm_key:
+    state: present
+    key: https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
+
+- name: Creat RabbitMQ Repo
+  template:
+    src: rabbitmq.repo.j2
+    dest: /etc/yum.repos.d/rabbitmq.repo
+    mode: 0644
+
+- name: Install Epel repo, Erlang-solutions
+  yum:
+    name:
+      - epel-release
+      - http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
+    state: installed
+
+
+- name: Install RabbitMQ packages
+  yum:
+    name: "{{ rabbitmq_distro_packages }}"
+    state: "present"
+  register: install_packages
+  until: install_packages is success
+  retries: 5
+  delay: 2
+  when: ansible_distribution == "CentOS"
+
+- name: start service rabbitmq
+  systemd:
+    name: "{{ rabbitmq_server_service }}"
+    state: started
+    enabled: True
+  register: service_restarted
+  until: service_restarted is success
+  retries: 5
+  delay: 1

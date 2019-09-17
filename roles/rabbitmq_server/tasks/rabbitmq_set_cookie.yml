@@ -4,7 +4,6 @@
     name: "{{ rabbitmq_server_service }}"
     state: "stopped"
 
-
 - name: Set rabbit cookie
   copy:
     content: "{{ rabbitmq_cookie_token }}"

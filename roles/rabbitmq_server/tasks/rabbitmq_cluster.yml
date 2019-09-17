@@ -1,4 +1,27 @@
 ---
+- name: remove mailformed ip address
+  lineinfile:
+    regexp: (?<!{{ hostvars[item].ansible_host }})\s+{{ item }}
+    state: absent
+    dest: "/etc/hosts"
+  with_items: "{{ groups['all'] }}"
+  become: true
+
+- name: remove mailformed hostname
+  lineinfile:
+    regexp: '^{{ hostvars[item].ansible_host }}\s+(?!{{ item }})'
+    state: absent
+    dest: "/etc/hosts"
+  with_items: "{{ groups['rabbitmq'] }}"
+  become: true
+
+- name: add appropriate ip <=> hostname mapping
+  lineinfile:
+    line: "{{ hostvars[item].ansible_host }} {{ item }}"
+    dest: "/etc/hosts"
+  with_items: "{{ groups['rabbitmq'] }}"
+  become: true
+
 - name: check rabbitmq cluster status
   shell: rabbitmqctl cluster_status | grep '{cluster_name,<<"{{ rabbitmq_cluster_name }}">>}'
   register: result

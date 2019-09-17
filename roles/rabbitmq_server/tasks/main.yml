@@ -1,10 +1,18 @@
 ---
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
-- include: rabbitmq_install.yml
+
+- include_tasks: rabbitmq_install_redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: rabbitmq_install_debian.yml
+  when: ansible_os_family == 'Debian'
+
 - include: rabbitmq_set_cookie.yml
   when: groups['rabbitmq']|length >= 3
+
 - include: rabbitmq_cluster.yml
   when: groups['rabbitmq']|length >= 3
+
 - include: rabbitmq_create_user.yml
   when: inventory_hostname == rabbitmq_master_node

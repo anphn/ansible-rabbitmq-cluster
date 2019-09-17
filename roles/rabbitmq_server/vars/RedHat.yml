@@ -3,3 +3,4 @@
 ## install rabbitmq-redhat
 rabbitmq_distro_packages:
   - rabbitmq-server
+  - erlang

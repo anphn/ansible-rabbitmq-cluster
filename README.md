@@ -30,6 +30,10 @@ rabbitmq_plugins:
     state: enabled
 
 ```
+## inventory
+
+* See inventory.ini. 
+* Change your server ip in inventory.ini in groups rabbitmq
 
 ### Run
 
