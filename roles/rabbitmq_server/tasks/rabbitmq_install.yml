@@ -11,7 +11,7 @@
   when: ansible_distribution == "Ubuntu"
   
 - name: Install RabbitMQ packages
-  apt:
+  yum:
     name: "{{ rabbitmq_distro_packages }}"
     state: "present"
   register: install_packages
